@@ -57,3 +57,12 @@ Learn more about Catalyst at [catalyst.dev](https://catalyst.dev).
 - [GraphQL Storefront API Playground](https://developer.bigcommerce.com/graphql-storefront/playground)
 - [GraphQL Storefront API Explorer](https://developer.bigcommerce.com/graphql-storefront/explorer)
 - [BigCommerce DevDocs](https://developer.bigcommerce.com/docs/build)
+
+
+
+
+## Things for Daniel to do.
+1. Add a new font
+2. Connect to a CMS - first with contentful. 
+3. Start a blog. 
+4. Add more products and categories.

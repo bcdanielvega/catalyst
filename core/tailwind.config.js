@@ -30,6 +30,7 @@ const config = {
           500: '#546E7A',
           600: '#091D45',
         },
+        seashell: '#FFF2EB'
       },
       fontFamily: {
         sans: ['var(--font-inter)'],
