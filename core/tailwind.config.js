@@ -33,7 +33,8 @@ const config = {
         seashell: '#FFF2EB'
       },
       fontFamily: {
-        sans: ['var(--font-inter)'],
+        sans: ['var(--font-agrandir)'],
+        agrandir: ['var(--font-agrandir)'],
       },
       borderColor: {
         DEFAULT: '#CFD8DC',

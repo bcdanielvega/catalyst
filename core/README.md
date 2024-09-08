@@ -59,8 +59,6 @@ Learn more about Catalyst at [catalyst.dev](https://catalyst.dev).
 - [BigCommerce DevDocs](https://developer.bigcommerce.com/docs/build)
 
 
-
-
 ## Things for Daniel to do.
 1. Add a new font
 2. Connect to a CMS - first with contentful. 

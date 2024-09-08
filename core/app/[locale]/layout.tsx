@@ -15,6 +15,10 @@ import { revalidate } from '~/client/revalidate-target';
 import { Notifications } from '../notifications';
 import { Providers } from '../providers';
 
+import localFont from 'next/font/local';
+
+const agrandir = localFont({ src: '../../public/fonts/Agrandir-Regular.otf', variable: '--font-agrandir'});
+
 const inter = Inter({
   subsets: ['latin'],
   display: 'swap',
@@ -72,7 +76,7 @@ export default function RootLayout({ children, params: { locale } }: Props) {
   const messages = useMessages();
 
   return (
-    <html className={`${inter.variable} font-sans bg-seashell`} lang={locale}>
+    <html className={`${agrandir.variable} font-sans bg-seashell`} lang={locale}>
       <body className="flex h-screen min-w-[375px] flex-col">
         <Notifications />
         <NextIntlClientProvider locale={locale} messages={messages}>
