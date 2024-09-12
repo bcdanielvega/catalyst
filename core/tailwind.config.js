@@ -11,7 +11,7 @@ const config = {
         transparent: 'transparent',
         current: 'currentColor',
         black: '#000000',
-        primary: '#053FB0',
+        primary: '#2578BB', //changed Cobalt blue to UCLA Blue
         secondary: '#3071EF',
         white: '#FFFFFF',
         error: {
@@ -30,7 +30,8 @@ const config = {
           500: '#546E7A',
           600: '#091D45',
         },
-        seashell: '#FFF2EB'
+        seashell: '#FFF2EB',
+        green: '#008D70'
       },
       fontFamily: {
         sans: ['var(--font-agrandir)'],
