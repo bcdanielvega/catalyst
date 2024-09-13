@@ -1,74 +1,80 @@
-import { createClient, EntryFieldTypes } from 'contentful';
-import { LessonItem } from '~/app/types';
-import { documentToReactComponents } from '@contentful/rich-text-react-renderer';
+import { Metadata, ResolvingMetadata } from 'next';
+import { draftMode } from 'next/headers';
+import { notFound } from 'next/navigation';
+import { fetchLesson, fetchLessons } from '~/src/contentful/lessons';
+import Link from 'next/link';
+import RichText from '~/src/contentful/RichText';
 
-type LessonSkeleton = 
-{
-    contentTypeId: 'lesson',
-    fields: {
-        title: EntryFieldTypes.Text,
-        slug: EntryFieldTypes.Text,
-        auther: EntryFieldTypes.Text,
-        lessonContent: EntryFieldTypes.RichText,
-        date: EntryFieldTypes.Date
-    }
+interface LessonPageParams {
+  slug: string;
 }
 
-const client = createClient({
-  accessToken: process.env.ACCESS_TOKEN ?? '',
-  space: process.env.SPACE_ID ?? '',
-});
-
-export async function generateStaticParams() {
-  const queryOptions = {
-    content_type: 'lesson',
-    select: 'fields.slug',
-  };
-  const lessons = await client.getEntries<LessonSkeleton>({
-    content_type: 'lesson',
-    // select: 'fields.slug'
-  });
-  return lessons.items.map((lesson) => ({
-    slug: lesson.fields.slug,
-  }));
+interface LessonPageProps {
+  params: LessonPageParams;
 }
 
-type LessonsPageProps = {
-  params: {
-    slug: string;
+// Tell Next.js about all our Lessons so
+// they can be statically generated at build time.
+export async function generateStaticParams(): Promise<LessonPageParams[]> {
+  const lessons = await fetchLessons({ preview: false });
+
+  return lessons.map((post) => ({ slug: post.slug }));
+}
+
+// For each lesson, tell Next.js which metadata
+// (e.g. page title) to display.
+export async function generateMetadata(
+  { params }: LessonPageProps,
+  parent: ResolvingMetadata,
+): Promise<Metadata> {
+  const lesson = await fetchLesson({ slug: params.slug, preview: draftMode().isEnabled });
+
+  if (!lesson) {
+    return notFound();
+  }
+
+  return {
+    title: lesson.title,
   };
-};
+}
 
-const fetchLessonPost = async (slug: string): Promise<LessonItem> => {
-  const queryOptions = {
-    content_type: 'lesson',
-    'fields.slug[match]': slug,
-  };
-  const queryResult = await client.getEntries(queryOptions);
-  return queryResult.items[0];
-};
+// The actual LessonPage component.
+async function LessonPage({ params }: LessonPageProps) {
+  // Fetch a single blog post by slug,
+  // using the content preview if draft mode is enabled:
+  const lesson = await fetchLesson({ slug: params.slug, preview: draftMode().isEnabled });
 
-export default async function LessonsPage(props: LessonsPageProps) {
-  const { params } = props;
-  const { slug } = params;
-
-  const lesson = await fetchLessonPost(slug);
-  const { title, date, lessonContent } = lesson.fields;
+  if (!lesson) {
+    // If a blog post can't be found,
+    // tell Next.js to render a 404 page.
+    return notFound();
+  }
 
   return (
-    <main className="flex min-h-screen justify-center p-24">
-      <div className="max-w-2xl">
-        <h1>{title}</h1>
-        {documentToReactComponents(lessonContent)}
-        <p className="mb-6 text-slate-400">
-          Posted on{' '}
-          {new Date(date).toLocaleDateString('en-US', {
-            year: 'numeric',
-            month: 'long',
-            day: 'numeric',
-          })}
-        </p>
+    <main className="p-[6vw]">
+      <Link href="/">← Posts</Link>
+      <div className="prose mt-8 border-t pt-8">
+        {/* Render the blog post image */}
+        {lesson.image && (
+          <img
+            src={lesson.image.src}
+            // Use the Contentful Images API to render
+            // responsive images. No next/image required:
+            srcSet={`${lesson.image.src}?w=300 1x, ${lesson.image.src} 2x`}
+            width={300}
+            height={300}
+            alt={lesson.image.alt}
+          />
+        )}
+
+        {/* Render the blog post title */}
+        <h1>{lesson.title}</h1>
+
+        {/* Render the blog post body */}
+        <RichText document={lesson.lessonContent} />
       </div>
     </main>
   );
 }
+
+export default LessonPage;
