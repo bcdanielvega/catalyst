@@ -33,13 +33,13 @@
       "resetPassword": "Forgot your password?"
     },
     "CreateAccount": {
-      "heading": "New customer?",
+      "heading": "Are we going to become friends?",
       "accountBenefits": "Create an account with us and you'll be able to:",
-      "fastCheckout": "Check out faster",
-      "multipleAddresses": "Save multiple shipping addresses",
-      "ordersHistory": "Access your order history",
-      "ordersTracking":  "Track new orders",
-      "wishlists": "Save items to your Wish List",
+      "fastCheckout": "Check out so fast, like really really fast",
+      "multipleAddresses": "Save all the address of you and your friends and your pets.",
+      "ordersHistory": "Look back on all your orders and ask yourself 'why?' ",
+      "ordersTracking":  "Make new mistakes... I mean orders",
+      "wishlists": "Save items to your Wish List that you'll never actually buy",
       "createLink": "Create Account "
     }
   },
